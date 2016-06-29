@@ -37,9 +37,8 @@ class SerializableAlchemy(SQLAlchemy):
         return super(SerializableAlchemy, self).apply_driver_hacks(app, info, options)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', None) or 'postgresql://localhost/gavel'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'gavel-secret')
-ADMIN_PASSWORD = os.environ['ADMIN_PASSWORD']
+app.config.from_pyfile('CONFIG_DEFAULT.cfg')
+app.config.from_pyfile('CONFIG.cfg')
 db = SerializableAlchemy(app)
 
 ANNOTATOR_ID = 'annotator_id'
@@ -112,7 +111,7 @@ class Decision(db.Model):
 ########################################
 
 def check_auth(username, password):
-    return username == 'admin' and password == ADMIN_PASSWORD
+    return username == 'admin' and password == app.config['ADMIN_PASSWORD']
 
 def authenticate():
     return Response('Access denied.', 401,
