@@ -206,13 +206,13 @@ def perform_vote(annotator, next_won):
     loser.sigma_sq = u_loser_sigma_sq
 
 def data_to_csv_string(data):
-    output = io.BytesIO()
+    output = io.StringIO()
     writer = csv.writer(output)
     writer.writerows(data)
     return output.getvalue()
 
 def data_from_csv_string(string):
-    input = io.BytesIO(string)
+    input = io.StringIO(string)
     reader = csv.reader(input)
     return list(reader)
 
@@ -308,7 +308,7 @@ def item():
     action = request.form['action']
     if action == 'Submit':
         csv_string = request.form['data']
-        data = data_from_csv_string(csv_string.encode('utf8'))
+        data = data_from_csv_string(csv_string)
         for row in data:
             item = Item(*row)
             db.session.add(item)
@@ -329,7 +329,7 @@ def annotator():
     action = request.form['action']
     if action == 'Submit':
         csv_string = request.form['data']
-        data = data_from_csv_string(csv_string.encode('utf8'))
+        data = data_from_csv_string(csv_string)
         for row in data:
             annotator = Annotator(*row)
             db.session.add(annotator)
