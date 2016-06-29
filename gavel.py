@@ -307,8 +307,8 @@ def admin():
 def item():
     action = request.form['action']
     if action == 'Submit':
-        csv = request.form['data']
-        data = data_from_csv_string(csv.encode('utf8'))
+        csv_string = request.form['data']
+        data = data_from_csv_string(csv_string.encode('utf8'))
         for row in data:
             item = Item(*row)
             db.session.add(item)
@@ -328,8 +328,8 @@ def item():
 def annotator():
     action = request.form['action']
     if action == 'Submit':
-        csv = request.form['data']
-        data = data_from_csv_string(csv.encode('utf8'))
+        csv_string = request.form['data']
+        data = data_from_csv_string(csv_string.encode('utf8'))
         for row in data:
             annotator = Annotator(*row)
             db.session.add(annotator)
